@@ -1,0 +1,347 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* Updated to coffee-themed color palette */
+  --background: oklch(0.99 0.005 85); /* Warm white */
+  --foreground: oklch(0.35 0.08 45); /* Coffee brown */
+  --card: oklch(0.97 0.01 85); /* Light warm gray */
+  --card-foreground: oklch(0.35 0.08 45); /* Coffee brown */
+  --popover: oklch(0.99 0.005 85); /* Warm white */
+  --popover-foreground: oklch(0.35 0.08 45); /* Coffee brown */
+  --primary: oklch(0.35 0.08 45); /* Coffee brown */
+  --primary-foreground: oklch(0.99 0.005 85); /* Warm white */
+  --secondary: oklch(0.75 0.15 85); /* Golden yellow */
+  --secondary-foreground: oklch(0.99 0.005 85); /* White */
+  --muted: oklch(0.85 0.02 45); /* Warm beige */
+  --muted-foreground: oklch(0.45 0.06 45); /* Darker coffee */
+  --accent: oklch(0.65 0.15 145); /* Natural green */
+  --accent-foreground: oklch(0.99 0.005 85); /* White */
+  --destructive: oklch(0.55 0.2 25); /* Warm red */
+  --destructive-foreground: oklch(0.99 0.005 85); /* White */
+  --border: oklch(0.9 0.01 85); /* Light border */
+  --input: oklch(0.97 0.01 85); /* Input background */
+  --ring: oklch(0.35 0.08 45 / 0.3); /* Coffee brown ring */
+  --chart-1: oklch(0.35 0.08 45); /* Coffee brown */
+  --chart-2: oklch(0.75 0.15 85); /* Golden yellow */
+  --chart-3: oklch(0.65 0.15 145); /* Natural green */
+  --chart-4: oklch(0.85 0.02 45); /* Warm beige */
+  --chart-5: oklch(0.55 0.2 25); /* Warm red */
+  --radius: 0.625rem;
+  --sidebar: oklch(0.99 0.005 85); /* Warm white */
+  --sidebar-foreground: oklch(0.35 0.08 45); /* Coffee brown */
+  --sidebar-primary: oklch(0.35 0.08 45); /* Coffee brown */
+  --sidebar-primary-foreground: oklch(0.99 0.005 85); /* White */
+  --sidebar-accent: oklch(0.75 0.15 85); /* Golden yellow */
+  --sidebar-accent-foreground: oklch(0.99 0.005 85); /* White */
+  --sidebar-border: oklch(0.9 0.01 85); /* Light border */
+  --sidebar-ring: oklch(0.35 0.08 45 / 0.3); /* Coffee brown ring */
+}
+
+.dark {
+  /* Dark mode with coffee theme */
+  --background: oklch(0.15 0.02 45); /* Dark coffee */
+  --foreground: oklch(0.95 0.01 85); /* Warm white */
+  --card: oklch(0.18 0.02 45); /* Slightly lighter dark */
+  --card-foreground: oklch(0.95 0.01 85); /* Warm white */
+  --popover: oklch(0.15 0.02 45); /* Dark coffee */
+  --popover-foreground: oklch(0.95 0.01 85); /* Warm white */
+  --primary: oklch(0.75 0.15 85); /* Golden yellow */
+  --primary-foreground: oklch(0.15 0.02 45); /* Dark coffee */
+  --secondary: oklch(0.35 0.08 45); /* Coffee brown */
+  --secondary-foreground: oklch(0.95 0.01 85); /* Warm white */
+  --muted: oklch(0.25 0.02 45); /* Muted dark */
+  --muted-foreground: oklch(0.75 0.01 85); /* Muted light */
+  --accent: oklch(0.65 0.15 145); /* Natural green */
+  --accent-foreground: oklch(0.95 0.01 85); /* Warm white */
+  --destructive: oklch(0.55 0.2 25); /* Warm red */
+  --destructive-foreground: oklch(0.95 0.01 85); /* Warm white */
+  --border: oklch(0.25 0.02 45); /* Dark border */
+  --input: oklch(0.25 0.02 45); /* Dark input */
+  --ring: oklch(0.75 0.15 85 / 0.3); /* Golden ring */
+  --chart-1: oklch(0.75 0.15 85); /* Golden yellow */
+  --chart-2: oklch(0.65 0.15 145); /* Natural green */
+  --chart-3: oklch(0.85 0.02 45); /* Warm beige */
+  --chart-4: oklch(0.55 0.2 25); /* Warm red */
+  --chart-5: oklch(0.45 0.1 200); /* Blue accent */
+  --sidebar: oklch(0.12 0.02 45); /* Darker sidebar */
+  --sidebar-foreground: oklch(0.95 0.01 85); /* Warm white */
+  --sidebar-primary: oklch(0.75 0.15 85); /* Golden yellow */
+  --sidebar-primary-foreground: oklch(0.15 0.02 45); /* Dark coffee */
+  --sidebar-accent: oklch(0.25 0.02 45); /* Muted dark */
+  --sidebar-accent-foreground: oklch(0.95 0.01 85); /* Warm white */
+  --sidebar-border: oklch(0.25 0.02 45); /* Dark border */
+  --sidebar-ring: oklch(0.75 0.15 85 / 0.3); /* Golden ring */
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Ocultando scrollbars para experiencia móvil nativa */
+/* Hide scrollbars for mobile app experience */
+* {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+*::-webkit-scrollbar {
+  display: none; /* WebKit */
+}
+
+/* Enhanced animations for mobile app experience */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-soft {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes bounce-gentle {
+  0%,
+  20%,
+  53%,
+  80%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  40%,
+  43% {
+    transform: translate3d(0, -5px, 0);
+  }
+  70% {
+    transform: translate3d(0, -3px, 0);
+  }
+  90% {
+    transform: translate3d(0, -1px, 0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.animate-pulse-soft {
+  animation: pulse-soft 2s ease-in-out infinite;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.5s ease-out;
+}
+
+.animate-bounce-gentle {
+  animation: bounce-gentle 1s ease-in-out;
+}
+
+/* Mobile-specific styles for iPhone frame */
+.mobile-frame {
+  width: 375px;
+  height: 812px;
+  background: white;
+  border-radius: 40px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  border: 8px solid #1f2937;
+  overflow: hidden;
+  position: relative;
+}
+
+.mobile-notch {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 128px;
+  height: 24px;
+  background: #1f2937;
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+  z-index: 10;
+}
+
+/* Coffee-themed gradient backgrounds */
+.coffee-gradient-warm {
+  background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 50%, #fde68a 100%);
+}
+
+.coffee-gradient-rich {
+  background: linear-gradient(135deg, #d97706 0%, #ea580c 50%, #dc2626 100%);
+}
+
+.coffee-gradient-natural {
+  background: linear-gradient(135deg, #65a30d 0%, #16a34a 50%, #059669 100%);
+}
+
+.coffee-gradient-premium {
+  background: linear-gradient(135deg, #92400e 0%, #b45309 50%, #d97706 100%);
+}
+
+/* Professional chart styles for dashboard */
+.chart-container {
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.1) 0%, rgba(245, 158, 11, 0.05) 100%);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+.chart-grid-line {
+  stroke: rgba(245, 158, 11, 0.3);
+  stroke-width: 0.5;
+  stroke-dasharray: 2, 2;
+}
+
+.chart-axis-text {
+  font-size: 10px;
+  fill: rgba(146, 64, 14, 0.8);
+  font-weight: 500;
+}
+
+.chart-data-line {
+  stroke: #d97706;
+  stroke-width: 3;
+  fill: none;
+  filter: drop-shadow(0 2px 4px rgba(217, 119, 6, 0.3));
+}
+
+.chart-data-area {
+  fill: url(#chartGradient);
+  opacity: 0.3;
+}
+
+.chart-data-point {
+  fill: #d97706;
+  stroke: white;
+  stroke-width: 2;
+  filter: drop-shadow(0 2px 4px rgba(217, 119, 6, 0.4));
+  transition: all 0.3s ease;
+}
+
+.chart-data-point:hover {
+  r: 6;
+  filter: drop-shadow(0 4px 8px rgba(217, 119, 6, 0.6));
+}
+
+.chart-tooltip {
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+/* Chart animations */
+@keyframes chartLineGrow {
+  from {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+  }
+  to {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes chartPointPop {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.chart-line-animated {
+  animation: chartLineGrow 2s ease-out;
+}
+
+.chart-point-animated {
+  animation: chartPointPop 0.6s ease-out;
+  animation-fill-mode: both;
+}
+
+/* Gradient definitions for charts */
+.chart-gradient-coffee {
+  background: linear-gradient(
+    180deg,
+    rgba(217, 119, 6, 0.4) 0%,
+    rgba(217, 119, 6, 0.1) 50%,
+    rgba(217, 119, 6, 0.05) 100%
+  );
+}
