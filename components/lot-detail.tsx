@@ -46,7 +46,7 @@ export default function LotDetail({ lot, onBack }: LotDetailProps) {
   }
 
   const generateQR = () => {
-    const qrData = `KAWAI-${lot.code}-${lot.farm}-${lot.variety}-${lot.producer}`
+    const qrData = `KAWAI 2025 ${lot.code}${lot.farm.substring(0, 3).toUpperCase()}${String(Math.floor(Math.random() * 1000)).padStart(3, "0")}`
     setShowQR(true)
   }
 
@@ -398,16 +398,25 @@ export default function LotDetail({ lot, onBack }: LotDetailProps) {
       {/* Modales */}
       {showQR && (
         <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl p-4 max-w-[280px] w-full">
-            <h3 className="text-base font-semibold text-amber-900 mb-3 text-center">Código QR</h3>
-            <div className="bg-amber-900 w-24 h-24 mx-auto rounded-lg flex items-center justify-center mb-3">
-              <div className="text-white text-xs text-center p-2">
-                <QrCode className="w-6 h-6 mx-auto mb-1" />
-                <p className="text-xs">{lot.code}</p>
+          <div className="bg-white rounded-xl p-6 max-w-[320px] w-full">
+            <h3 className="text-lg font-semibold text-amber-900 mb-4 text-center">Código QR del Lote</h3>
+            <div className="bg-gradient-to-br from-amber-900 to-orange-800 w-40 h-40 mx-auto rounded-xl flex items-center justify-center mb-4 shadow-lg">
+              <div className="text-white text-center p-4">
+                <QrCode className="h-32 w-32 mx-auto mb-2" />
               </div>
             </div>
-            <p className="text-center text-xs text-gray-600 mb-3">Escanea para ver información del lote</p>
-            <Button onClick={() => setShowQR(false)} className="w-full bg-amber-800 hover:bg-amber-900 text-sm py-2">
+            <div className="text-center mb-4">
+              <p className="text-xs text-gray-500 mb-1">Código del lote:</p>
+              <p className="text-sm font-mono font-bold text-amber-900 bg-amber-50 px-3 py-2 rounded-lg border">
+                {lot.code}
+                {lot.farm.substring(0, 3).toUpperCase()}
+                {String(Math.floor(Math.random() * 1000)).padStart(3, "0")}
+              </p>
+            </div>
+            <p className="text-center text-xs text-gray-600 mb-4">
+              Escanea para acceder a la información completa de trazabilidad
+            </p>
+            <Button onClick={() => setShowQR(false)} className="w-full bg-amber-800 hover:bg-amber-900">
               Cerrar
             </Button>
           </div>
