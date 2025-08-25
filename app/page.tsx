@@ -1158,7 +1158,7 @@ export default function KawaiGuardian() {
                   <button
                     onClick={() => {
                       setSelectedProducer(producer)
-                      setShowContactModal(true)
+                      setShowMarketplaceDetail(true)
                     }}
                     className="w-full mt-3 text-amber-600 hover:text-amber-800 text-xs font-medium border border-amber-200 rounded-lg py-2 hover:bg-amber-50 transition-all"
                   >
@@ -1168,6 +1168,151 @@ export default function KawaiGuardian() {
               ))}
             </div>
           </div>
+
+          {/* Modal del carrito */}
+          {showCart && (
+            <div className="absolute inset-0 bg-black/50 z-50 flex items-end">
+              <div className="bg-white w-full h-[80vh] rounded-t-3xl p-6 overflow-y-auto">
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="text-xl font-bold text-amber-800">Mi Carrito</h2>
+                  <button
+                    onClick={() => setShowCart(false)}
+                    className="p-2 hover:bg-gray-100 rounded-full"
+                  >
+                    <X className="w-6 h-6" />
+                  </button>
+                </div>
+                
+                {cart.length === 0 ? (
+                  <div className="text-center py-12">
+                    <ShoppingCart className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                    <p className="text-gray-500">Tu carrito está vacío</p>
+                  </div>
+                ) : (
+                  <>
+                    <div className="space-y-4 mb-6">
+                      {cart.map((item) => (
+                        <div key={item.id} className="flex items-center space-x-4 bg-amber-50 p-4 rounded-lg">
+                          <div className="w-12 h-12 bg-amber-400 rounded-lg flex items-center justify-center">
+                            <Coffee className="w-6 h-6 text-white" />
+                          </div>
+                          <div className="flex-1">
+                            <h3 className="font-semibold text-amber-800">{item.coffee}</h3>
+                            <p className="text-sm text-amber-600">{item.producer}</p>
+                            <p className="text-sm font-medium">S/ {(item.price * 3.7).toFixed(2)} x {item.quantity}</p>
+                          </div>
+                          <button
+                            onClick={() => {
+                              const updatedCart = cart.filter(cartItem => cartItem.id !== item.id)
+                              setCart(updatedCart)
+                              localStorage.setItem("kawai-guardian-cart", JSON.stringify(updatedCart))
+                            }}
+                            className="p-2 text-red-500 hover:bg-red-50 rounded-full"
+                          >
+                            <X className="w-5 h-5" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                    
+                    <div className="border-t pt-4">
+                      <div className="flex justify-between items-center mb-4">
+                        <span className="text-lg font-semibold">Total:</span>
+                        <span className="text-2xl font-bold text-amber-800">
+                          S/ {cart.reduce((sum, item) => sum + (item.price * 3.7 * item.quantity), 0).toFixed(2)}
+                        </span>
+                      </div>
+                      <button
+                        onClick={handleCheckout}
+                        className="w-full bg-gradient-to-r from-amber-600 to-orange-600 text-white py-3 rounded-lg font-semibold hover:from-amber-700 hover:to-orange-700 transition-all"
+                      >
+                        Proceder al Pago
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Modal de checkout */}
+          {showCheckout && (
+            <div className="absolute inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+              <div className="bg-white rounded-2xl p-6 w-full max-w-md">
+                <div className="flex justify-between items-center mb-4">
+                  <h2 className="text-xl font-bold text-amber-800">Finalizar Compra</h2>
+                  <button
+                    onClick={() => setShowCheckout(false)}
+                    className="p-2 hover:bg-gray-100 rounded-full"
+                  >
+                    <X className="w-6 h-6" />
+                  </button>
+                </div>
+                
+                <div className="space-y-4">
+                  <div className="text-center">
+                    <p className="text-2xl font-bold text-amber-800">
+                      Total: S/ {cart.reduce((sum, item) => sum + (item.price * 3.7 * item.quantity), 0).toFixed(2)}
+                    </p>
+                  </div>
+                  
+                  <div className="space-y-3">
+                    <button
+                      onClick={confirmOrder}
+                      className="w-full bg-green-500 text-white py-3 rounded-lg font-semibold hover:bg-green-600 transition-colors flex items-center justify-center space-x-2"
+                    >
+                      <span>Pagar con Yape</span>
+                    </button>
+                    <button
+                      onClick={confirmOrder}
+                      className="w-full bg-blue-500 text-white py-3 rounded-lg font-semibold hover:bg-blue-600 transition-colors"
+                    >
+                      Pagar con Tarjeta
+                    </button>
+                    <button
+                      onClick={confirmOrder}
+                      className="w-full bg-amber-500 text-white py-3 rounded-lg font-semibold hover:bg-amber-600 transition-colors"
+                    >
+                      Google Pay
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Confirmación de pedido */}
+          {orderConfirmed && (
+            <div className="absolute inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+              <div className="bg-white rounded-2xl p-8 w-full max-w-md text-center">
+                <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
+                <h2 className="text-2xl font-bold text-green-600 mb-2">¡Pedido Confirmado!</h2>
+                <p className="text-gray-600 mb-4">
+                  Tu pedido ha sido procesado exitosamente. Recibirás una confirmación por email.
+                </p>
+                <button
+                  onClick={() => setOrderConfirmed(false)}
+                  className="bg-green-500 text-white px-6 py-2 rounded-lg font-semibold hover:bg-green-600 transition-colors"
+                >
+                  Continuar
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Modal de marketplace detail */}
+          {showMarketplaceDetail && selectedProducer && (
+            <div className="absolute inset-0 z-50">
+              <MarketplaceDetail
+                producer={selectedProducer}
+                onBack={() => {
+                  setShowMarketplaceDetail(false)
+                  setSelectedProducer(null)
+                }}
+                onAddToCart={addToCart}
+              />
+            </div>
+          )}
 
           <NavigationMenu currentScreen={currentScreen} setCurrentScreen={setCurrentScreen} />
         </div>
@@ -1315,18 +1460,8 @@ export default function KawaiGuardian() {
       </div>
     </div>
   )
-  showMarketplaceDetail && selectedProducer && (
-    <MarketplaceDetail
-      producer={selectedProducer}
-      onBack={() => {
-        setShowMarketplaceDetail(false)
-        setSelectedProducer(null)
-      }}
-      onAddToCart={addToCart}
-    />
-  )
 
-  // Modales y pantallas adicionales con sintaxis corregida
+  // Modales y pantallas adicionales
   return (
     <PhoneFrame>
       {(currentScreen === "dashboard" ||
