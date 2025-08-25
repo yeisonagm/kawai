@@ -206,7 +206,7 @@ export const producers: Producer[] = [
 export const lots: Lot[] = [
   {
     id: "1",
-    code: "KAWAI-2024-LOSCE001",
+    code: "KAWAI-2025-LOSCE001",
     producer: "Juana Torres Gálvez",
     farm: "Los Cedros",
     variety: "Bourbon Rojo",
@@ -224,7 +224,7 @@ export const lots: Lot[] = [
   },
   {
     id: "2",
-    code: "KAWAI-2024-SANIG002",
+    code: "KAWAI-2025-SANIG002",
     producer: "Pedro Huamán",
     farm: "San Ignacio",
     variety: "Catuaí Amarillo",
@@ -242,7 +242,7 @@ export const lots: Lot[] = [
   },
   {
     id: "3",
-    code: "KAWAI-2024-CUTE003",
+    code: "KAWAI-2025-CUTE003",
     producer: "Luis Ñahui",
     farm: "Cutervo",
     variety: "Geisha",
@@ -260,7 +260,7 @@ export const lots: Lot[] = [
   },
   {
     id: "4",
-    code: "KAWAI-2024-ELMIR004",
+    code: "KAWAI-2025-ELMIR004",
     producer: "María Vásquez",
     farm: "El Mirador",
     variety: "Caturra",
@@ -278,7 +278,7 @@ export const lots: Lot[] = [
   },
   {
     id: "5",
-    code: "KAWAI-2024-ALTAV005",
+    code: "KAWAI-2025-ALTAV005",
     producer: "Carlos Mendoza",
     farm: "Alta Vista",
     variety: "Typica",
@@ -296,7 +296,7 @@ export const lots: Lot[] = [
   },
   {
     id: "6",
-    code: "KAWAI-2024-BELAV006",
+    code: "KAWAI-2025-BELAV006",
     producer: "Ana Rojas",
     farm: "Bella Vista",
     variety: "Pacamara",
@@ -314,7 +314,7 @@ export const lots: Lot[] = [
   },
   {
     id: "7",
-    code: "KAWAI-2024-SANMA007",
+    code: "KAWAI-2025-SANMA007",
     producer: "Roberto Silva",
     farm: "San Martín",
     variety: "Bourbon Amarillo",
@@ -332,7 +332,7 @@ export const lots: Lot[] = [
   },
   {
     id: "8",
-    code: "KAWAI-2024-LASFL008",
+    code: "KAWAI-2025-LASFL008",
     producer: "Elena Paredes",
     farm: "Las Flores",
     variety: "Catuai Rojo",
@@ -821,7 +821,7 @@ export const notifications = [
     id: 2,
     type: "pest",
     title: "Alerta de Plagas",
-    message: "Broca del café detectada en Lote KAWAI-2024-SANIG002",
+    message: "Broca del café detectada en Lote KAWAI-2025-SANIG002",
     time: "Hace 3 horas",
     read: false,
   },
@@ -845,7 +845,7 @@ export const notifications = [
     id: 5,
     type: "pest",
     title: "Tratamiento Aplicado",
-    message: "Fungicida aplicado exitosamente en Lote KAWAI-2024-CUTE003",
+    message: "Fungicida aplicado exitosamente en Lote KAWAI-2025-CUTE003",
     time: "Hace 2 días",
     read: true,
   },

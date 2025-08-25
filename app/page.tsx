@@ -25,9 +25,7 @@ import {
   CheckCircle,
   Store,
   Home,
-  Trash2,
   MessageCircle,
-  Send,
 } from "lucide-react"
 import { dashboardCards } from "@/lib/data"
 import { lots, marketData } from "@/lib/data"
@@ -35,6 +33,7 @@ import ProfileSettings from "@/components/profile-settings"
 import LotDetail from "@/components/lot-detail"
 import InteractiveMap from "@/components/interactive-map"
 import PhoneFrame from "@/components/phone-frame"
+import ChatScreen from "@/components/chat-screen"
 
 type Screen =
   | "welcome"
@@ -50,6 +49,8 @@ type Screen =
   | "map"
   | "settings"
   | "location"
+  | "assist"
+  | "chat"
 
 const notificationsData = [
   {
@@ -275,6 +276,13 @@ export default function KawaiGuardian() {
     const storedProfile = localStorage.getItem("kawai_user_profile")
     if (storedProfile) {
       setUserProfile(JSON.parse(storedProfile))
+    }
+  }, [])
+
+  useEffect(() => {
+    const savedCart = localStorage.getItem("kawai-guardian-cart")
+    if (savedCart) {
+      setCart(JSON.parse(savedCart))
     }
   }, [])
 
@@ -551,15 +559,33 @@ export default function KawaiGuardian() {
     const lowerInput = input.toLowerCase()
 
     if (lowerInput.includes("técnica") || lowerInput.includes("cultivo") || lowerInput.includes("plaga")) {
-      return "🌱 Para técnicas agrícolas, te recomiendo revisar la sección de Lotes donde encontrarás alertas específicas sobre plagas y condiciones climáticas. También puedes contactar a nuestros técnicos especializados."
+      return "🌱 Para técnicas agrícolas, te recomiendo revisar la sección de Lotes donde encontrarás alertas específicas sobre plagas y condiciones climáticas. También puedes contactar a nuestros técnicos especializados desde el chat integrado."
     } else if (lowerInput.includes("trazabilidad") || lowerInput.includes("qr") || lowerInput.includes("código")) {
-      return "📱 La trazabilidad se maneja desde cada lote individual. Puedes generar códigos QR únicos para cada producción y compartir la información completa con tus compradores."
+      return "📱 La trazabilidad se maneja desde cada lote individual. Puedes generar códigos QR únicos para cada producción y compartir la información completa con tus compradores. Ve a Lotes > Seleccionar lote > Generar QR."
     } else if (lowerInput.includes("mercado") || lowerInput.includes("venta") || lowerInput.includes("precio")) {
-      return "💰 En la sección Mercado encontrarás productores verificados, precios actualizados y podrás contactar directamente con compradores. Los precios se actualizan diariamente."
+      return "💰 En la sección Mercado encontrarás productores verificados, precios actualizados y podrás contactar directamente con compradores. Los precios se actualizan diariamente y puedes agregar productos a tu carrito."
     } else if (lowerInput.includes("contacto") || lowerInput.includes("ayuda") || lowerInput.includes("soporte")) {
-      return "📞 Para soporte técnico, puedes usar el chat integrado en cada perfil de productor o contactar a nuestro equipo desde Configuración > Centro de Ayuda."
+      return "📞 Para soporte técnico, puedes usar el chat integrado en cada perfil de productor o contactar a nuestro equipo desde Configuración > Centro de Ayuda. También ofrecemos chat en vivo con técnicos agrícolas."
+    } else if (lowerInput.includes("clima") || lowerInput.includes("tiempo") || lowerInput.includes("lluvia")) {
+      return "🌦️ Las alertas climáticas aparecen en tu Dashboard y en cada lote específico. Recibimos datos meteorológicos actualizados para ayudarte a tomar decisiones sobre tu cultivo."
+    } else if (
+      lowerInput.includes("exportar") ||
+      lowerInput.includes("internacional") ||
+      lowerInput.includes("exportación")
+    ) {
+      return "🌍 Para exportación internacional, revisa la sección Mercado donde encontrarás compradores internacionales. También puedes actualizar a la membresía Exportador para acceso a analítica avanzada."
+    } else if (lowerInput.includes("membresía") || lowerInput.includes("plan") || lowerInput.includes("suscripción")) {
+      return "💎 Tenemos 3 planes: Gratuito (3 lotes), Pro S/29/mes (lotes ilimitados + alertas), y Exportador S/79/mes (todo + compradores internacionales). Ve a Ajustes > Membresía para actualizar."
+    } else if (lowerInput.includes("carrito") || lowerInput.includes("comprar") || lowerInput.includes("pedido")) {
+      return "🛒 Puedes agregar productos al carrito desde la sección Mercado. El carrito te permite revisar tu pedido, calcular totales y proceder al pago con Yape, tarjeta o Google Pay."
+    } else if (lowerInput.includes("notificación") || lowerInput.includes("alerta") || lowerInput.includes("aviso")) {
+      return "🔔 Las notificaciones aparecen en la campanita del header. Recibirás alertas sobre clima, plagas, pedidos y confirmaciones. Puedes configurarlas en Ajustes > Configuración."
+    } else if (lowerInput.includes("hola") || lowerInput.includes("buenos") || lowerInput.includes("buenas")) {
+      return "👋 ¡Hola! Soy KAWAI ASSIST, tu asistente para todo lo relacionado con café. Estoy aquí para ayudarte con técnicas de cultivo, trazabilidad, mercado y más. ¿En qué puedo asistirte hoy?"
+    } else if (lowerInput.includes("gracias") || lowerInput.includes("perfecto") || lowerInput.includes("excelente")) {
+      return "😊 ¡De nada! Me alegra poder ayudarte. Si tienes más preguntas sobre tu cultivo de café o cualquier función de KAWAI GUARDIAN, no dudes en consultarme."
     } else {
-      return "🤖 Puedo ayudarte con: técnicas agrícolas 🌱, trazabilidad de productos 📱, información de mercado 💰, y contactos comerciales 📞. ¿Sobre qué tema específico necesitas ayuda?"
+      return "🤖 Puedo ayudarte con: técnicas agrícolas 🌱, trazabilidad de productos 📱, información de mercado 💰, alertas climáticas 🌦️, membresías 💎, y contactos comerciales 📞. ¿Sobre qué tema específico necesitas ayuda?"
     }
   }
 
@@ -1053,9 +1079,9 @@ export default function KawaiGuardian() {
                   onClick={() => setShowCart(true)}
                   className="relative bg-white/20 hover:bg-white/30 p-2 rounded-full transition-colors"
                 >
-                  <ShoppingCart className="w-5 h-5" />
+                  <ShoppingCart className="w-5 h-5 text-white" />
                   {cart.length > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
                       {cart.reduce((sum, item) => sum + item.quantity, 0)}
                     </span>
                   )}
@@ -1171,6 +1197,14 @@ export default function KawaiGuardian() {
     )
   }
 
+  if (currentScreen === "chat") {
+    return (
+      <PhoneFrame>
+        <ChatScreen onClose={() => setCurrentScreen("dashboard")} />
+      </PhoneFrame>
+    )
+  }
+
   // Modales y pantallas adicionales con sintaxis corregida
   return (
     <PhoneFrame>
@@ -1180,130 +1214,14 @@ export default function KawaiGuardian() {
         currentScreen === "location") && (
         <button
           onClick={() => setShowChatbot(true)}
-          className="fixed bottom-20 right-4 z-50 bg-gradient-to-r from-amber-600 to-amber-700 text-white p-4 rounded-full shadow-lg hover:from-amber-700 hover:to-amber-800 transition-all duration-300 animate-pulse"
+          className="fixed bottom-24 right-4 z-40 bg-gradient-to-r from-amber-600 via-amber-700 to-orange-600 text-white p-4 rounded-full shadow-xl hover:shadow-2xl hover:scale-110 transition-all duration-300 animate-bounce"
         >
           <MessageCircle className="w-6 h-6" />
+          <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
         </button>
       )}
 
-      {showChatbot && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-end justify-center">
-          <div className="bg-white rounded-t-3xl w-full max-w-md h-96 flex flex-col">
-            <div className="bg-gradient-to-r from-amber-600 to-amber-700 p-4 rounded-t-3xl flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <Coffee className="w-5 h-5 text-amber-600" />
-                </div>
-                <div>
-                  <h3 className="text-white font-semibold">KAWAI ASSIST</h3>
-                  <p className="text-amber-100 text-xs">Asistente Virtual</p>
-                </div>
-              </div>
-              <button onClick={() => setShowChatbot(false)} className="text-white hover:text-amber-200">
-                <X className="w-6 h-6" />
-              </button>
-            </div>
-
-            <div className="flex-1 overflow-y-auto p-4 space-y-3">
-              {chatMessages.map((message) => (
-                <div key={message.id} className={`flex ${message.isBot ? "justify-start" : "justify-end"}`}>
-                  <div
-                    className={`max-w-xs p-3 rounded-2xl ${
-                      message.isBot ? "bg-amber-100 text-amber-800" : "bg-amber-600 text-white"
-                    }`}
-                  >
-                    <p className="text-sm">{message.text}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="p-4 border-t border-gray-200">
-              <div className="flex space-x-2">
-                <input
-                  type="text"
-                  value={chatInput}
-                  onChange={(e) => setChatInput(e.target.value)}
-                  onKeyPress={(e) => e.key === "Enter" && handleChatSubmit()}
-                  placeholder="Escribe tu consulta..."
-                  className="flex-1 p-3 border border-amber-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-transparent"
-                />
-                <button
-                  onClick={handleChatSubmit}
-                  className="bg-amber-600 text-white p-3 rounded-xl hover:bg-amber-700 transition-colors"
-                >
-                  <Send className="w-5 h-5" />
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      <div className="flex flex-col h-full bg-gradient-to-br from-amber-50 to-orange-50">
-        {showCart && (
-          <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-2xl p-6 w-full max-w-md max-h-[90%] overflow-y-auto">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-xl font-bold text-amber-900">Carrito de Compras</h3>
-                <button onClick={() => setShowCart(false)} className="text-amber-600 hover:text-amber-800">
-                  <X className="w-6 h-6" />
-                </button>
-              </div>
-
-              {cart.length === 0 ? (
-                <div className="text-center py-8">
-                  <ShoppingCart className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                  <p className="text-gray-500">Tu carrito está vacío</p>
-                </div>
-              ) : (
-                <>
-                  <div className="space-y-4 mb-6">
-                    {cart.map((item) => (
-                      <div key={item.id} className="flex items-center space-x-3 p-3 bg-amber-50 rounded-lg">
-                        <img
-                          src={item.image || "/placeholder.svg"}
-                          alt={item.coffee}
-                          className="w-12 h-12 rounded-lg object-cover"
-                        />
-                        <div className="flex-1">
-                          <h4 className="font-semibold text-amber-900">{item.coffee}</h4>
-                          <p className="text-sm text-amber-600">{item.producer}</p>
-                          <p className="text-sm font-bold text-green-600">S/ {(item.price * 3.7).toFixed(2)}</p>
-                        </div>
-                        <button
-                          onClick={() => {
-                            const updatedCart = cart.filter((cartItem) => cartItem.id !== item.id)
-                            setCart(updatedCart)
-                            localStorage.setItem("kawai-guardian-cart", JSON.stringify(updatedCart))
-                          }}
-                          className="text-red-500 hover:text-red-700"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="border-t pt-4 mb-6">
-                    <div className="flex justify-between items-center text-lg font-bold text-amber-900">
-                      <span>Total:</span>
-                      <span>S/ {cart.reduce((total, item) => total + item.price * 3.7, 0).toFixed(2)}</span>
-                    </div>
-                  </div>
-
-                  <button
-                    onClick={handleCheckout}
-                    className="w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-3 rounded-lg font-semibold hover:from-green-600 hover:to-green-700 transition-all"
-                  >
-                    Proceder al Pago
-                  </button>
-                </>
-              )}
-            </div>
-          </div>
-        )}
-      </div>
+      {showChatbot && <ChatScreen onClose={() => setShowChatbot(false)} />}
     </PhoneFrame>
   )
 }
@@ -1311,7 +1229,7 @@ export default function KawaiGuardian() {
 const NavigationMenu = ({ currentScreen, setCurrentScreen }: any) => (
   <div className="absolute bottom-2 left-0 right-0 flex justify-center px-4">
     <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg border border-amber-200/50 px-6 py-3">
-      <div className="flex items-center space-x-8">
+      <div className="flex items-center space-x-6">
         <button
           onClick={() => setCurrentScreen("dashboard")}
           className={`flex flex-col items-center space-y-1 transition-colors ${
@@ -1347,6 +1265,15 @@ const NavigationMenu = ({ currentScreen, setCurrentScreen }: any) => (
         >
           <MapPin className="w-6 h-6" />
           <span className="text-xs font-medium">Ubicación</span>
+        </button>
+        <button
+          onClick={() => setCurrentScreen("chat")}
+          className={`flex flex-col items-center space-y-1 transition-colors ${
+            currentScreen === "chat" ? "text-amber-600" : "text-gray-500"
+          }`}
+        >
+          <MessageCircle className="w-6 h-6" />
+          <span className="text-xs font-medium">Chat</span>
         </button>
       </div>
     </div>
