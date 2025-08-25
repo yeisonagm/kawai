@@ -33,7 +33,9 @@ import ProfileSettings from "@/components/profile-settings"
 import LotDetail from "@/components/lot-detail"
 import InteractiveMap from "@/components/interactive-map"
 import PhoneFrame from "@/components/phone-frame"
+import KawaiAssist from "../components/kawai-assist"
 import ChatScreen from "@/components/chat-screen"
+import MarketplaceDetail from "../components/marketplace-detail"
 
 type Screen =
   | "welcome"
@@ -51,6 +53,7 @@ type Screen =
   | "location"
   | "assist"
   | "chat"
+  | "mercado"
 
 const notificationsData = [
   {
@@ -220,7 +223,8 @@ export default function KawaiGuardian() {
   const [notifications, setNotifications] = useState(notificationsData)
   const [showNotifications, setShowNotifications] = useState(false)
   const [showContactModal, setShowContactModal] = useState(false)
-  const [selectedProducer, setSelectedProducer] = useState(null)
+  const [selectedProducer, setSelectedProducer] = useState<any>(null)
+  const [showMarketplaceDetail, setShowMarketplaceDetail] = useState(false)
   const [showMap, setShowMap] = useState(false)
   const [userProfile, setUserProfile] = useState({
     name: "Pedro Huamán",
@@ -383,8 +387,8 @@ export default function KawaiGuardian() {
   const addToCart = (producer: any) => {
     const cartItem = {
       id: Date.now(),
-      producer: producer.producer,
-      coffee: producer.coffee,
+      producer: producer.producer || producer.name,
+      coffee: producer.coffee || producer.variety,
       price: producer.price,
       quantity: 1,
       image: producer.image,
@@ -394,7 +398,7 @@ export default function KawaiGuardian() {
     localStorage.setItem("kawai-guardian-cart", JSON.stringify(updatedCart))
 
     // Mostrar notificación visual
-    setCartNotification(`${producer.coffee} agregado al carrito`)
+    setCartNotification(`${producer.coffee || producer.variety} agregado al carrito`)
     setTimeout(() => setCartNotification(""), 3000)
   }
 
@@ -605,7 +609,7 @@ export default function KawaiGuardian() {
           <div className="flex-1 flex flex-col items-center justify-center p-6 space-y-6">
             <div className="w-48 h-48 rounded-full overflow-hidden shadow-lg">
               <img
-                src="kawai-guardian.jpg"
+                src="https://drive.google.com/file/d/1eqqh2IWyVqTiHlP5YrmVD1-ZV_DVmejX/view?usp=drive_link"
                 alt="Caficultor sonriendo"
                 className="w-full h-full object-cover"
               />
@@ -647,7 +651,7 @@ export default function KawaiGuardian() {
           <div className="flex-1 flex flex-col justify-center p-6 space-y-6">
             <div className="flex justify-center mb-6">
               <img
-                src="kawai-guardian.jpg"
+                src="https://drive.google.com/uc?export=view&id=1eqqh2IWyVqTiHlP5YrmVD1-ZV_DVmejX"
                 alt="KAWAI GUARDIAN Logo"
                 className="w-24 h-24 rounded-2xl shadow-lg border-4 border-white"
               />
@@ -1204,6 +1208,123 @@ export default function KawaiGuardian() {
       </PhoneFrame>
     )
   }
+  currentScreen === "mercado" && (
+    <div className="h-full overflow-y-auto bg-gradient-to-br from-amber-50 to-orange-50 pb-20">
+      {/* Header */}
+      <div className="bg-gradient-to-r from-amber-800 to-orange-700 text-white p-4">
+        <div className="flex items-center justify-between">
+          <h1 className="text-xl font-bold">Mercado</h1>
+          <button
+            onClick={() => setShowCart(true)}
+            className="relative bg-white/20 hover:bg-white/30 p-2 rounded-full transition-colors"
+          >
+            <ShoppingCart className="w-5 h-5 text-white" />
+            {cart.length > 0 && (
+              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
+                {cart.reduce((sum, item) => sum + item.quantity, 0)}
+              </span>
+            )}
+          </button>
+        </div>
+      </div>
+
+      {/* Notification */}
+      {cartNotification && (
+        <div className="fixed top-20 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50 animate-bounce">
+          ✓ {cartNotification}
+        </div>
+      )}
+
+      {/* Producers Grid */}
+      <div className="p-4 space-y-4">
+        {marketData.map((producer, index) => (
+          <div
+            key={producer.id}
+            className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
+          >
+            <div className="p-4">
+              <div className="flex items-start space-x-4">
+                {/* Coffee Icon */}
+                <div className="w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <span className="text-white text-lg">☕</span>
+                </div>
+
+                {/* Producer Info */}
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="font-bold text-amber-900 truncate">{producer.coffee}</h3>
+                    <div className="flex items-center space-x-1">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <span
+                          key={star}
+                          className={`text-xs ${star <= Math.floor(producer.rating) ? "text-yellow-400" : "text-gray-300"}`}
+                        >
+                          ★
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <p className="text-sm text-amber-700 mb-1">{producer.producer}</p>
+                  <p className="text-xs text-gray-600 mb-2">{producer.location}</p>
+
+                  {/* Certifications */}
+                  <div className="flex flex-wrap gap-1 mb-2">
+                    {producer.certifications.map((cert, certIndex) => (
+                      <span key={certIndex} className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">
+                        {cert}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* Price and Stock */}
+                  <div className="flex items-center justify-between mb-3">
+                    <div>
+                      <span className="text-lg font-bold text-green-600">S/ {(producer.price * 3.7).toFixed(1)}</span>
+                      <span className="text-xs text-gray-500 ml-1">por kg</span>
+                    </div>
+                    <span className="text-xs text-gray-600">{producer.stock} kg disponibles</span>
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="flex space-x-2">
+                    <button
+                      onClick={() => {
+                        setSelectedProducer(producer)
+                        setShowMarketplaceDetail(true)
+                      }}
+                      className="flex-1 bg-gradient-to-r from-amber-500 to-orange-500 text-white px-3 py-2 rounded-lg text-xs font-semibold hover:from-amber-600 hover:to-orange-600 transition-all"
+                    >
+                      Ver Detalles
+                    </button>
+                    <button
+                      onClick={() => {
+                        addToCart(producer)
+                      }}
+                      className="bg-gradient-to-r from-green-500 to-green-600 text-white px-3 py-2 rounded-lg text-xs font-semibold hover:from-green-600 hover:to-green-700 transition-all flex items-center space-x-1"
+                    >
+                      <ShoppingCart className="w-3 h-3" />
+                      <span>Agregar</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+  showMarketplaceDetail && selectedProducer && (
+    <MarketplaceDetail
+      producer={selectedProducer}
+      onBack={() => {
+        setShowMarketplaceDetail(false)
+        setSelectedProducer(null)
+      }}
+      onAddToCart={addToCart}
+    />
+  )
 
   // Modales y pantallas adicionales con sintaxis corregida
   return (
@@ -1221,7 +1342,7 @@ export default function KawaiGuardian() {
         </button>
       )}
 
-      {showChatbot && <ChatScreen onClose={() => setShowChatbot(false)} />}
+      <KawaiAssist show={showChatbot} onClose={() => setShowChatbot(false)} />
     </PhoneFrame>
   )
 }
