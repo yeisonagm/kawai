@@ -641,7 +641,7 @@ export default function ChatScreen({ onClose }: ChatScreenProps) {
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder="Escribe tu consulta sobre café..."
+              placeholder="Escribe tu consulta"
               className="w-full px-4 py-3 pr-12 border border-amber-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent resize-none"
               rows={1}
             />
