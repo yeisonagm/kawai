@@ -27,6 +27,20 @@ interface ProfileData {
   story: string
 }
 
+interface ChatMessage {
+  sender: string
+  message: string
+  time: string
+  isOwn: boolean
+  hasButton?: boolean
+  buttonText?: string
+  buttonAction?: string
+  hasImage?: boolean
+  imageUrl?: string
+  imageAlt?: string
+  isSystemMessage?: boolean
+}
+
 export default function ProfileSettings() {
   const [activeTab, setActiveTab] = useState("profile")
   const [profileData, setProfileData] = useState<ProfileData>({
@@ -116,9 +130,18 @@ export default function ProfileSettings() {
       unread: 0,
       status: "offline",
     },
+    {
+      id: 5,
+      name: "Luis Exportador",
+      avatar: "LE",
+      lastMessage: "Compra confirmada 🛒",
+      time: "12:30 PM",
+      unread: 1,
+      status: "online",
+    },
   ]
 
-  const chatConversations = {
+  const chatConversations: Record<number, ChatMessage[]> = {
     1: [
       { sender: "Exportadora Lima SAC", message: "Hola Luis, ¿cómo estás?", time: "10:30 AM", isOwn: false },
       { sender: "Luis", message: "¡Hola! Todo bien, gracias por preguntar", time: "10:32 AM", isOwn: true },
@@ -168,6 +191,63 @@ export default function ProfileSettings() {
         isOwn: false,
       },
     ],
+    5: [
+      {
+        sender: "Luis Exportador",
+        message: "Hola Don Pedro, ¿tiene certificación orgánica?",
+        time: "11:15 AM",
+        isOwn: false,
+      },
+      {
+        sender: "Don Pedro",
+        message: "Sí, está en blockchain.",
+        time: "11:18 AM",
+        isOwn: true,
+        hasButton: true,
+        buttonText: "📄 Ver Certificación",
+        buttonAction: "viewCertification"
+      },
+      {
+        sender: "Luis Exportador",
+        message: "Excelente, confirmo compra de 50 kg.",
+        time: "11:22 AM",
+        isOwn: false,
+      },
+      {
+        sender: "Don Pedro",
+        message: "📸 Foto del grano recién procesado",
+        time: "11:25 AM",
+        isOwn: true,
+        hasImage: true,
+        imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqzaX3VpPyalxrvGLDlGZ1AoukffXZhgYofQ&s",
+        imageAlt: "Granos de café procesados"
+      },
+      {
+        sender: "Luis Exportador",
+        message: "Se ve excelente la calidad. Procedo con el pago.",
+        time: "11:30 AM",
+        isOwn: false,
+        hasButton: true,
+        buttonText: "🛒 Confirmar compra",
+        buttonAction: "confirmPurchase"
+      },
+      {
+        sender: "Sistema",
+        message: "✨ ¡Felicidades! Lote #001 vendido a Luis Exportador. Pago confirmado.",
+        time: "12:30 PM",
+        isOwn: true,
+        isSystemMessage: true,
+        hasButton: true,
+        buttonText: "📊 Ver mis ingresos",
+        buttonAction: "viewEarnings"
+      },
+      {
+        sender: "Luis Exportador",
+        message: "Compra confirmada. Café de San Ignacio, Cajamarca ☕ 🚚 Envío coordinado.",
+        time: "12:32 PM",
+        isOwn: false,
+      },
+    ],
   }
 
   useEffect(() => {
@@ -191,6 +271,22 @@ export default function ProfileSettings() {
     if (newMessage.trim()) {
       // Aquí se agregaría la lógica para enviar el mensaje
       setNewMessage("")
+    }
+  }
+
+  const handleChatAction = (action: string) => {
+    switch (action) {
+      case "viewCertification":
+        alert("🔍 Mostrando certificación orgánica en blockchain...")
+        break
+      case "confirmPurchase":
+        alert("🛒 Procesando compra de 50kg...")
+        break
+      case "viewEarnings":
+        alert("📊 Mostrando reporte de ingresos...")
+        break
+      default:
+        break
     }
   }
 
@@ -525,11 +621,42 @@ export default function ProfileSettings() {
             <div key={index} className={`flex ${msg.isOwn ? "justify-end" : "justify-start"}`}>
               <div
                 className={`max-w-[80%] px-3 py-2 rounded-lg ${
-                  msg.isOwn ? "bg-amber-600 text-white rounded-br-sm" : "bg-gray-200 text-gray-800 rounded-bl-sm"
+                  msg.isSystemMessage
+                    ? "bg-gradient-to-r from-green-100 to-green-200 text-green-800 rounded-lg border border-green-300"
+                    : msg.isOwn 
+                    ? "bg-amber-600 text-white rounded-br-sm" 
+                    : "bg-gray-200 text-gray-800 rounded-bl-sm"
                 }`}
               >
                 <p className="text-sm">{msg.message}</p>
                 <p className="text-xs opacity-70 mt-1">{msg.time}</p>
+                
+                {/* Imagen si existe */}
+                {msg.hasImage && (
+                  <div className="mt-2">
+                    <img
+                      src={msg.imageUrl}
+                      alt={msg.imageAlt || "Imagen"}
+                      className="w-full max-w-[200px] h-auto rounded-lg border shadow-sm"
+                    />
+                  </div>
+                )}
+                
+                {/* Botón si existe */}
+                {msg.hasButton && msg.buttonAction && (
+                  <button
+                    onClick={() => handleChatAction(msg.buttonAction!)}
+                    className={`mt-2 px-3 py-1 text-xs rounded-full font-medium transition-colors ${
+                      msg.isSystemMessage
+                        ? "bg-green-600 text-white hover:bg-green-700"
+                        : msg.isOwn
+                        ? "bg-white text-amber-600 hover:bg-amber-50"
+                        : "bg-amber-600 text-white hover:bg-amber-700"
+                    }`}
+                  >
+                    {msg.buttonText}
+                  </button>
+                )}
               </div>
             </div>
           ))}
