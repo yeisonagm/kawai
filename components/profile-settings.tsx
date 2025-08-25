@@ -30,8 +30,8 @@ interface ProfileData {
 export default function ProfileSettings() {
   const [activeTab, setActiveTab] = useState("profile")
   const [profileData, setProfileData] = useState<ProfileData>({
-    name: "Luis Ñahui",
-    email: "luis.nahui@correo.com",
+    name: "Pedro Huamán",
+    email: "pedro.hauman@correo.com",
     phone: "+51 987 123 456",
     role: "Caficultor",
     experience: "12 años",
@@ -66,11 +66,11 @@ export default function ProfileSettings() {
 
   const predefinedAccounts = {
     yape: [
-      { id: 1, name: "Luis Ñahui", number: "+51 987 123 456", isDefault: true },
+      { id: 1, name: "Pedro Huamán", number: "+51 987 123 456", isDefault: true },
       { id: 2, name: "María Ñahui", number: "+51 987 654 321", isDefault: false },
     ],
     googlepay: [
-      { id: 1, email: "luis.nahui@gmail.com", isDefault: true },
+      { id: 1, email: "pedro.huaman@gmail.com", isDefault: true },
       { id: 2, email: "luis.nahui.work@gmail.com", isDefault: false },
     ],
     card: [
@@ -234,8 +234,15 @@ export default function ProfileSettings() {
   const renderProfileTab = () => (
     <div className="space-y-6">
       <div className="text-center">
-        <div className="w-24 h-24 bg-gradient-to-br from-amber-600 to-amber-800 rounded-full mx-auto mb-4 flex items-center justify-center">
-          <User className="w-12 h-12 text-white" />
+        <div className="w-24 h-24 rounded-full mx-auto mb-4 overflow-hidden border-4 border-amber-200 shadow-lg">
+          <img
+            src="/profile-pedro.jpg" 
+            alt="Pedro Huamán"
+            className="w-full h-full object-cover"
+            onError={(e) => {
+              e.currentTarget.src = "/placeholder-user.jpg"
+            }}
+          />
         </div>
         <h3 className="text-xl font-bold text-amber-900">{profileData.name}</h3>
         <p className="text-amber-700">{profileData.role}</p>

@@ -609,7 +609,7 @@ export default function KawaiGuardian() {
           <div className="flex-1 flex flex-col items-center justify-center p-6 space-y-6">
             <div className="w-48 h-48 rounded-full overflow-hidden shadow-lg">
               <img
-                src="https://drive.google.com/file/d/1eqqh2IWyVqTiHlP5YrmVD1-ZV_DVmejX/view?usp=drive_link"
+                src="/kawai-guardian.jpg"
                 alt="Caficultor sonriendo"
                 className="w-full h-full object-cover"
               />
@@ -651,7 +651,7 @@ export default function KawaiGuardian() {
           <div className="flex-1 flex flex-col justify-center p-6 space-y-6">
             <div className="flex justify-center mb-6">
               <img
-                src="https://drive.google.com/uc?export=view&id=1eqqh2IWyVqTiHlP5YrmVD1-ZV_DVmejX"
+                src="/kawai-guardian.jpg"
                 alt="KAWAI GUARDIAN Logo"
                 className="w-24 h-24 rounded-2xl shadow-lg border-4 border-white"
               />
